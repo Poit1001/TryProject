@@ -1,6 +1,6 @@
 package com.samsung.spring.service.impl;
 
-import com.samsung.spring.dao.UserDao;
+import com.samsung.spring.dao.UserRepository;
 import com.samsung.spring.domain.User;
 import com.samsung.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,26 +13,26 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
     @Override
     public User add(User user) {
-        return userDao.save(user);
+        return userRepository.save(user);
     }
 
     @Override
     public List<User> getAll() {
-        return userDao.findAll();
+        return userRepository.findAll();
     }
 
     @Override
     public User getById(long id) {
-        return userDao.findById(id).orElse(null);
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override
     public User update(long id, User user) {
-        Optional<User> userOptional = userDao.findById(id);
+        Optional<User> userOptional = userRepository.findById(id);
         if (!userOptional.isPresent()) throw new RuntimeException("User with ID " + id + " not found");
             User updateUser = userOptional.get();
             updateUser.setName(user.getName());
@@ -40,11 +40,11 @@ public class UserServiceImpl implements UserService {
             updateUser.setRole(user.getRole());
             updateUser.setPhotoUrl(user.getPhotoUrl());
 
-            return userDao.save(user);
+            return userRepository.save(user);
     }
 
     @Override
     public void deleteById(long id) {
-        userDao.deleteById(id);
+        userRepository.deleteById(id);
     }
 }
